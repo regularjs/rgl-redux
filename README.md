@@ -1,6 +1,8 @@
 # Regular-Redux
 一个微型模块用于 [Regular](http://regularjs.github.io) 组件实现[Redux](http://redux.js.org).
 
+[![build status](https://img.shields.io/travis/regularjs/regular-redux/master.svg?style=flat-square)](https://travis-ci.org/regularjs/regular-redux) [![npm version](https://img.shields.io/npm/v/regular-redux.svg?style=flat-square)](https://www.npmjs.com/package/regular-redux)
+
 ```sh
 npm install regular-redux
 ```

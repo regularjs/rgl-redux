@@ -18,7 +18,8 @@
   },
   "rules": {
     "valid-jsdoc": 2,
-    "no-console": 0
+    "no-console": 0,
+    "no-unused-vars": 1
   },
   "plugins": [
     "import"
