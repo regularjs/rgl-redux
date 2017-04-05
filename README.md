@@ -89,3 +89,6 @@ connect({
 
 ### Future
 * timeline plugin: 时间线插件，用于提供实现`撤销`, `重做`的操作机制
+
+## License
+MIT

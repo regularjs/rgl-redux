@@ -1,8 +1,9 @@
 {
   "name": "rgl-redux",
   "version": "0.0.2",
-  "description": "regularjs bindings for Redux",
+  "description": "Regularjs bindings for Redux",
   "main": "src/index.js",
+  "module": "es/index.js",
   "scripts": {
     "example": "gulp build:example && cd examples && puer",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
@@ -18,12 +19,26 @@
     "test:cov": "cross-env NODE_ENV=test nyc npm test",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/regularjs/rgl-redux.git"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "es"
+  ],
   "keywords": [
     "redux",
     "regularjs"
   ],
   "author": "regularjs",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gaearon/rgl-redux/issues"
+  },
+  "homepage": "https://github.com/gaearon/rgl-redux",
   "peerDependencies": {
     "redux": "^3.6.0",
     "regularjs": "^0.6.0-beta.1"
@@ -57,5 +72,9 @@
     "vinyl-named": "^1.1.0",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
   }
 }
