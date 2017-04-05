@@ -1,20 +1,20 @@
-# Regular-Redux
+# Regular Redux
 一个微型模块用于 [Regular](http://regularjs.github.io) 组件实现[Redux](http://redux.js.org).
 
-[![build status](https://img.shields.io/travis/regularjs/regular-redux/master.svg?style=flat-square)](https://travis-ci.org/regularjs/regular-redux) [![npm version](https://img.shields.io/npm/v/regular-redux.svg?style=flat-square)](https://www.npmjs.com/package/regular-redux)
+[![build status](https://img.shields.io/travis/regularjs/rgl-redux/master.svg?style=flat-square)](https://travis-ci.org/regularjs/rgl-redux) [![npm version](https://img.shields.io/npm/v/rgl-redux.svg?style=flat-square)](https://www.npmjs.com/package/rgl-redux)
 
 ```sh
-npm install regular-redux
+npm install rgl-redux
 ```
 
-## 需求
+## 运行要求
 * regularjs 0.6.0-beta.1以上版本
 * webpack+babel 用于构建基于ES6语法的应用
 
 ## 用法
 `module/App.js`:
 ```js
-import 'regular-redux';
+import 'rgl-redux';
 import './module/MyApp';
 import { reducer } from './reducers'
 import { createStore } from 'redux';
@@ -33,7 +33,7 @@ const AppContainer = Regular.extend({
 
 `components/MyComp.js`:
 ```js
-import { connect } from 'regular-redux';
+import { connect } from 'rgl-redux';
 import { changeFoo } from './actions';
 
 const MyComp = Regular.extend({
