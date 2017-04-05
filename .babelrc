@@ -1,0 +1,16 @@
+{
+  "presets": [["es2015"]],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    },
+    "commonjs": {
+      "presets": [
+        ["es2015", { "modules": false }]
+      ]
+    },
+    "es": {
+      "presets": []
+    }
+  }
+}
