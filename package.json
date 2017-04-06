@@ -36,9 +36,9 @@
   "author": "regularjs",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gaearon/rgl-redux/issues"
+    "url": "https://github.com/regularjs/rgl-redux/issues"
   },
-  "homepage": "https://github.com/gaearon/rgl-redux",
+  "homepage": "https://github.com/regularjs/rgl-redux",
   "peerDependencies": {
     "redux": "^3.6.0",
     "regularjs": "^0.6.0-beta.1"
