@@ -1,7 +1,7 @@
 # Regular Redux
 一个微型模块用于 [Regular](http://regularjs.github.io) 组件实现[Redux](http://redux.js.org).
 
-[![build status](https://img.shields.io/travis/regularjs/rgl-redux/master.svg?style=flat-square)](https://travis-ci.org/regularjs/rgl-redux) [![npm version](https://img.shields.io/npm/v/rgl-redux.svg?style=flat-square)](https://www.npmjs.com/package/rgl-redux)
+[![build status](https://img.shields.io/travis/regularjs/rgl-redux/develop.svg?style=flat-square)](https://travis-ci.org/regularjs/rgl-redux) [![npm version](https://img.shields.io/npm/v/rgl-redux.svg?style=flat-square)](https://www.npmjs.com/package/rgl-redux)
 
 ```sh
 npm install rgl-redux
@@ -54,6 +54,10 @@ export default connect({
 })(MyComp);
 
 ```
+## 示例项目
+示例项目位于 `examples` 目录，克隆项目后，运行 `npm run example`
+* [TodoApp 示例](examples/Todo)
+
 ## 文档
 ### StoreProvider
 位于`src/StoreProvider.js`
