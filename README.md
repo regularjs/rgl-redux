@@ -85,14 +85,284 @@ connect({
 ```
 * `definition.dispatch` _(Boolean)_: 一个布尔属性指定当前组件是否需要进行分发特定操作（dispatch action）。该属性为任意`true`值时，位于`StoreProvider`组件内部的组件会被注入 `$dispatch` 方法，绑定自 Redux的 `store.dispatch` 方法。
 
+## 使用时间线插件：timeline plugin
+## new Store(configs)
+`module/store.js`:
+```js
+import {Store} from 'rgl-redux';
+
+export const store = new Store({
+  state: {
+    count: 0
+  },
+  reducers: {
+    count(state, payload) {
+      let count = state.count;
+      count++;
+      return Object.assign({}, state, {count});
+    }
+  }
+});
+```
+## 将store注入到StoreProvider
+
+`module/AppContainer.js`:
+```js
+import store from './module/store';
+import 'rgl-redux';
+import './module/App';
+
+const AppContainer = Regular.extend({
+  template: `
+  <StoreProvider store={store}>
+    <App />
+  </StoreProvider>
+  `,
+  config(data) {
+    data.store = store;
+  },
+});
+```
+
+`components/App.js`:
+```js
+import { connect } from 'rgl-redux';
+
+let App = Regular.extend({
+
+  name: 'app',
+
+  template: `
+    <div>count: {count}</div>
+    <button on-click={this.onClick()}>count</button>
+    <button on-click={this.$dispatch("undo")}>undo</button>
+    <button on-click={this.$dispatch("redo")}>redo</button>
+  `,
+  
+  onClick() {
+    this.$dispatch('count');
+  },
+
+  config() {
+    //第一次初始化的时候不会触发mapState，这里暂时这样写
+    setTimeout(() => this.$dispatch('@init/state'), 100)
+  }
+
+});
+
+App = connect({
+ 
+  mapState(state) {
+    return {
+      count: state.count,
+    };
+  },
+
+  dispatch: true
+
+})(App);
+
+```
+### 注意
+由于rgl-redux在组件初始化的时候并不会调用mapState，所以需要在组件实例化后this.$dispatch('@init/state')
+## 时间线插件文档
+### new Rgx.Store(configs)
+store的构造函数，接受一个配置对象configs，用于创建app的store。
+```js
+new Rex.Store({
+  state: {
+    count: 0
+  },
+  reducers: {
+    count(state, payload) {
+      let count = state.count;
+      count++;
+      return Object.assign({}, state, {count});
+    }
+  }
+});
+```
+### config.undoable
+是否可以undo、redo，默认开启。
+### config.state
+store的默认state，这个state是全局的（和模块区分，模块见下面文档）。
+### config.reducers
+store全局reducer（和模块区分，模块见下面文档）。
+### config.modules
+```js
+new Rex.Store({
+  ...
+  state: {
+    count: 0
+  },
+  modules: {
+    moduleA: {
+      state: {
+        count: 1
+      },
+      reducers: {
+        moduleAcount(moduleA, payload) {
+          let count = moduleA.count;
+          count++;
+          return Object.assign({}, moduleA, {count});
+        }
+      }
+    }
+  }
+  ....
+});
+//全局state会和局部state进行合并，实例中会合成为：
+//state: {
+//  count: 0,
+//  moduleA: {
+//    count: 1
+//  }
+//}
+
+//模块中的reducer注入的state会自动换成module层次的state
+```
+`注意：如果有模块的时候，全局的state必须是一个对象`
+### module.combineMode：'assign' | 'extend' | 'replace'，默认assign
+```js
+new Rgx.Store({
+  state: {
+    count: 0,
+    moduleA: {
+        count: 1,
+        other: 2
+    }
+  },
+  modules: {
+    moduleA: {
+      state: {
+        count: 2
+      }
+    }
+  }
+});
+//extendMode为assign的时候state会合并成为：
+//state: {
+//  count: 0,
+//  moduleA: {
+//    count: 2,
+//    other: 2
+//  }
+//}
+
+new Rgx.Store({
+  state: {
+    count: 0,
+    moduleA: {
+      count: 1,
+      other: 2
+    }
+  },
+  modules: {
+    moduleA: {  
+      extendMode: 'extend',
+      state: {
+        count: 2,
+      }
+    }
+  }
+});
+//extendMode为assign的时候state会合并成为：
+//state: {
+//  count: 0,
+//  moduleA: {
+//    count: 1,
+//    other: 2
+//  }
+//}
+
+new Rgx.Store({
+  state: {
+    count: 0,
+    moduleA: {
+      count: 1,
+      other: 2
+    }
+  },
+  modules: {
+    moduleA: {  
+      extendMode: 'replace',
+      state: {
+        count: 2,
+      }
+    }
+  }
+});
+//extendMode为assign的时候state会合并成为：
+//state: {
+//  count: 0,
+//  moduleA: {
+//    count: 2
+//  }
+//}
+```
+### config.middlewares
+中间件，可用于数据修改无关的操作，例如发送保存请求，记录日志等。
+```js
+function myMiddleware(context, next) {
+  //context的方法: dispatch, getState
+  //next：只有执行了next()后dispatch才会往下执行
+}
+
+new Rex.Store({
+  ...
+  middlewares:[myMiddleware]
+  ....
+});
+```
+### config.modifiers
+可用于对reducer返回的state做一些改变，业务中经常用于数据关联处理。
+```js
+function myModifiers(reducer) {
+  return (state, action) {
+    //do something
+    let newState = reducer(state, action);
+    //do something
+    return newState; //这里要return新的state
+  }
+}
+
+new Rex.Store({
+  ...
+  modifiers:[myModifiers]
+  ....
+});
+```
+### 内置dispatch的方法
+```js
+//回退历史
+this.$dispatch("undo") //store.dispatch("undo")
+//前进
+this.$dispatch("redo") //store.dispatch("redo")
+//重置state
+this.$dispatch("@init/state") //store.dispatch("@init/state")
+//替换state
+this.$dispatch("@replace/state") //store.dispatch("@replace/state")
+
+```
+
+### dispatch的payload
+```js
+payload.replace = true //表示本次dispach产生的state会替换上一次的提交
+
+payload.clean = true //表示只保存本次提交
+
+payload.record = false //表示这次产生的state不会进历史
+
+payload.steps = 2 // 表示undo, redo的步长，只在undo, redo的时候有效
+
+```
+
 ## 路线图
 ### v0.2.0
 * broadcast event: StoreProvider内的广播事件支持
 * Complicated example: 更完整复杂的示例
 * ActionMap: 一种简洁的方式实现dispatch -> action的映射
 
-### Future
-* timeline plugin: 时间线插件，用于提供实现`撤销`, `重做`的操作机制
 
 ## License
 MIT
