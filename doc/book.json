@@ -1,0 +1,27 @@
+{
+  "author": "rgl-redux",
+  "description": "rgl-redux document",
+  "extension": null,
+  "generator": "site",
+  "links": {
+    "gitbook": false,
+    "sharing": {
+      "all": false,
+      "facebook": false,
+      "google": false,
+      "twitter": false,
+      "weibo": false
+    },
+    "sidebar": {}
+  },
+  "output": null,
+  "styles": {
+    "website": "src/common.css"
+  },
+  "plugins": ["-lunr", "-search","search-pro", "fontsettings"],
+  "title": "Regular Redux中文文档",
+  "variables": {
+    "reference": "https://regularjs.github.io/rgl-redux",
+    "ref": "https://regularjs.github.io/rgl-redux"
+  }
+}

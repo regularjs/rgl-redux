@@ -17,7 +17,9 @@
     "test": "cross-env BABEL_ENV=commonjs NODE_ENV=test mocha --compilers js:babel-register --recursive --require ./test/index.js",
     "test:watch": "npm test -- --watch",
     "test:cov": "cross-env NODE_ENV=test nyc npm test",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "doc:start": "gitbook serve",
+    "doc:deploy": "gitbook build doc/ && gulp document:deploy"
   },
   "repository": {
     "type": "git",
@@ -58,8 +60,10 @@
     "eslint-plugin-import": "^2.2.0",
     "expect": "^1.20.2",
     "expect.js": "^0.3.1",
+    "gitbook-cli": "^2.3.2",
     "gulp": "^3.9.1",
     "gulp-all": "^1.1.0",
+    "gulp-gh-pages": "^0.5.4",
     "gulp-plumber": "^1.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
